@@ -8,9 +8,14 @@ import { maskNickname } from '@/utils/format';
 import useSWRMutation from 'swr/mutation';
 import { postInterviewLike } from '@/app/apis/services/member';
 import { useSWRConfig } from 'swr';
-import { CategoryName } from '@/types/question';
+import { CategoryName, SubcategoryName } from '@/types/question';
 import { Category } from '@/constants/category';
 import useInfiniteInterview from '@/hooks/interview/useInfiniteInterview';
+import { useRouter } from 'next/navigation';
+import { interviewTypeAtom } from '@/recoil/interviewType/atom';
+import { useSetRecoilState } from 'recoil';
+import { selectedChoiceCategoryAtom } from '@/recoil/selectedCategory/atom';
+import { myQuestionAtom } from '@/recoil/myQuestion/atom';
 
 export default function DetailInterview({
   item,
@@ -29,6 +34,26 @@ export default function DetailInterview({
   };
   const { mutate } = useSWRConfig();
   const { interviewMutate } = useInfiniteInterview(categorySelect, current);
+  const router = useRouter();
+
+  const setInterviewType = useSetRecoilState(interviewTypeAtom);
+  const setCategory = useSetRecoilState(selectedChoiceCategoryAtom);
+  const setMyQuestion = useSetRecoilState(myQuestionAtom);
+
+  setCategory(categoryName);
+  setInterviewType('choice');
+  console.log(item);
+  setMyQuestion(prevMyQuestion => {
+    const newQuestion = questions.map(q => {
+      return {
+        questionId: q.questionId,
+        category: categoryName,
+        subcategory: '세부 카테고리' as SubcategoryName,
+        questionContent: q.questionContent,
+      };
+    });
+    return [...prevMyQuestion, ...newQuestion];
+  });
 
   const { trigger } = useSWRMutation('api/member/like', () => postInterviewLike(interviewId), {
     onSuccess: () => {
@@ -42,9 +67,9 @@ export default function DetailInterview({
     trigger();
   };
 
-  useEffect(() => {
-    console.log(likeCount);
-  }, [likeCount]);
+  const onStartInterview = () => {
+    router.push('/interview/start');
+  };
 
   return (
     <div className="fixed z-40 -translate-x-1/2 p-7 -translate-y-1/2 left-1/2 top-1/2 w-screen h-screen  bg-black/60 shadow-md flex items-center justify-center">
@@ -79,7 +104,7 @@ export default function DetailInterview({
           ))}
         </ul>
         <div className="flex justify-end">
-          <Button size="lg" text="sm">
+          <Button size="lg" text="sm" onClick={onStartInterview}>
             면접 시작하기
           </Button>
         </div>
