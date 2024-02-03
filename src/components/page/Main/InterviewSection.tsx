@@ -23,7 +23,7 @@ export type QuestionItemType = {
 
 export interface InterviewItemType {
   interviewId: number;
-  categoryName: string;
+  categoryName: CategoryName;
   nickname: string;
   questions: QuestionItemType[];
   likeCount: string;
@@ -54,6 +54,7 @@ export default function InterviewSection() {
 
   useEffect(() => {
     const findInterview = data?.find(item => selectInterview?.interviewId === item.interviewId);
+
     findInterview && setSelectInterview(findInterview);
   }, [data]);
 
