@@ -11,7 +11,7 @@ type InterivewProgress =
 
 interface InterviewProgressBar {
   interview: InterivewProgress;
-  text: string;c
+  text: string;
 }
 
 export default function InterviewProgressBar({
