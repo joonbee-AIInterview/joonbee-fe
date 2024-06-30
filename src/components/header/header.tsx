@@ -14,6 +14,7 @@ import { NavbarIsOpenAtom } from '@/recoils/responsive/navbar/atom';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { LoginInfo } from './LoginInfo';
+import SubHeader from './subHeader';
 
 const MainHeader = dynamic(() => import('./mainHeader').then(mod => mod.MainHeader), {
   ssr: false,
@@ -26,7 +27,8 @@ export default function Header() {
   const isLogined = useRecoilValue(isLoginedAtom);
   const isNickOpen = useRecoilValue(isNickAtom);
   useEffect(() => {
-    window.scrollTo(0, 0);
+    
+    if(pathName !== process.env.NEXT_PUBLIC_LANDING_PATH) window.scrollTo(0, 0);
   }, []);
   return (
     <header className="z-50 flex-col w-screen h-[114px] relative bg-white text-gray-dark">
@@ -38,18 +40,7 @@ export default function Header() {
         </div>
         <MainHeader />
       </div>
-      <div
-        className="w-full
-    h-[54px] effect-white flex items-center">
-        <LoginInfo />
-        <div className="flex items-center justify-between w-full overflow-hidden ">
-          <div className={`flex px-2 w-full ${isOpen && 'min-w-[320px]'}`}>
-            {pathName === '/' && <HomeHeader />}
-            <InterviewHeader />
-            {pathName === '/my' && <MyHeader />}
-          </div>
-        </div>
-      </div>
+      {!(pathName === process.env.NEXT_PUBLIC_LANDING_PATH) && <SubHeader pathname={pathName} isOpen={isOpen}/>}
 
       {isNickOpen && (
         <ModalPortal>

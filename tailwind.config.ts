@@ -70,7 +70,27 @@ const config: Config = {
         normal: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
         sm: '0px 2px 2px 0px rgba(0, 0, 0, 0.25)',
         md: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+        card: '0px 4px 4px 0px rgba(0, 1, 0, 0.25)'
       },
+      keyframes: {
+        slideLeft: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        marqueeLeft: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        marqueeRight: {
+          '0%': { transform: 'translateX(-100%)'},
+          '100%': { transform: 'translateX(0%)'}
+        }
+      },
+      animation: {
+        slideLeft: 'slideLeft 3s ease-out forwards',
+        marqueeLeft: 'marqueeLeft 9s linear infinite',
+        marqueeRight: 'marqueeRight 9s linear infinite'
+      }
     },
   },
   plugins: [],
