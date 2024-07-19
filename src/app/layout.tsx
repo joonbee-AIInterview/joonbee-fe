@@ -7,6 +7,7 @@ import { Noto_Sans_KR } from 'next/font/google';
 import Header from '@/components/header/header';
 import Navbar from '@/components/navbar/navbar';
 import { META } from '@/constants/openGraph';
+import { BodyProvider } from '@/components/wrapper/bodyProvider';
 
 const notoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
@@ -38,20 +39,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="600" />
       </head>
-      <body
-        suppressHydrationWarning={true}
-        className={(notoSansKr.className, 'bg-white text-gray-dark')}
-        id="portal">
-        <RecoilRootProvider>
-          <QueryProvider>
-            <Header />
-            <main className="flex">
-              <Navbar />
-              {children}
-            </main>
-          </QueryProvider>
-        </RecoilRootProvider>
-      </body>
+      <BodyProvider>
+          <RecoilRootProvider>
+            <QueryProvider>
+              <Header />
+              <main className="flex">
+                <Navbar />
+                {children}
+              </main>
+            </QueryProvider>
+          </RecoilRootProvider>
+        </BodyProvider>
     </html>
   );
 }

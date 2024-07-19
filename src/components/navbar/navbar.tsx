@@ -42,7 +42,7 @@ export default function Navbar() {
     setIsOpen(!isOpen);
     resetSelectInterview();
   };
-
+  if(pathName === process.env.NEXT_PUBLIC_LANDING_PATH) return null;
   return (
     <div
       className={`md:min-w-[260px] min-w-[50px] relative questionListHeight effect-white text-gray-dark bg-white ${
